@@ -238,10 +238,17 @@ public class BookDao {
 			String query = "";
 			query += "select b.book_id, b.title, b.pubs, to_char(b.pub_date, 'YYYY-MM-DD'), a.author_id, a.author_name, a.author_desc "; 
 			query += "from book b, author a ";
-			query += "where b.author_id = a.author_id";
+			query += "where b.author_id = a.author_id ";
+			query += "and (b.title like ? or b.pubs like ? or a.author_name like ? or a.author_desc like ?) ";
 			
 			pstmt = conn.prepareStatement(query);
 			
+			find = '%' + find + '%';
+			pstmt.setString(1, find);
+			pstmt.setString(2, find);
+			pstmt.setString(3, find);
+			pstmt.setString(4, find);
+						
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
