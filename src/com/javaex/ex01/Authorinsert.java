@@ -58,8 +58,8 @@ public class Authorinsert {
 				if (conn != null) {
 					conn.close();
 				}
-			} finally {
-			
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
 			}
 		}
 	}
