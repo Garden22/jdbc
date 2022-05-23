@@ -191,7 +191,6 @@ public class BookDao {
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		} finally {
-			// 5. 자원정리
 			try {
 				if (rs != null) {
 					rs.close();
@@ -217,18 +216,14 @@ public class BookDao {
 	
 	
 	
-	public List<BookVo> BookSearch() {
-		Scanner sc = new Scanner(System.in);
+	public List<BookVo> BookSearch(String find) {
 		
 		List<BookVo> bookList = new ArrayList<>();
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
-		System.out.println("검색할 키워드를 입력하세요.");
-		String find = sc.next();
-		
+				
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
@@ -238,18 +233,23 @@ public class BookDao {
 			String query = "";
 			query += "select b.book_id, b.title, b.pubs, to_char(b.pub_date, 'YYYY-MM-DD'), a.author_id, a.author_name, a.author_desc "; 
 			query += "from book b, author a ";
-			query += "where b.author_id = a.author_id";
+			query += "where b.author_id = a.author_id ";
+			query += "and (b.title like ? or b.pubs like ? or a.author_name like ? or a.author_desc like ?) ";
 			
 			pstmt = conn.prepareStatement(query);
+			
+			find = '%' + find + '%';
+			pstmt.setString(1, find);
+			pstmt.setString(2, find);
+			pstmt.setString(3, find);
+			pstmt.setString(4, find);
 			
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BookVo curr = new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7));
-				if (curr.getTitle().contains(find) || curr.getPubs().contains(find) || curr.getAuthorName().contains(find) || curr.getAuthorDesc().contains(find)) {
-					bookList.add(curr);
+				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
 				}
-			}
+			
 			
 		} catch (ClassNotFoundException e) {
 			System.out.println("errer: 드라이버 로딩 실패 - " + e);
@@ -281,7 +281,6 @@ public class BookDao {
 			System.out.println("조회된 데이터가 없습니다.");
 		}
 		
-		sc.close();
 		return bookList;
 	}
 }
