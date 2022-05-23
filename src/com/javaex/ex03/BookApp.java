@@ -10,8 +10,7 @@ public class BookApp {
 		BookDao bookDao = new BookDao();
 		
 		System.out.println("검색할 키워드를 입력하세요.");
-		String find = sc.next();
-		bookDao.BookSearch(find);
+		bookDao.BookSearch(sc.next());
 		sc.close();
 	}
 
