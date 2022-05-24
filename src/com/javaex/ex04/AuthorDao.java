@@ -14,9 +14,9 @@ public class AuthorDao {
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
 	
 	
 	public int authorInsert(AuthorVo authorVo) {
@@ -140,7 +140,7 @@ public class AuthorDao {
 	
 	
 	
-	public void getConnection() {
+	private void getConnection() {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, id, pw);
@@ -155,7 +155,7 @@ public class AuthorDao {
 	
 	
 	
-	public void close() {
+	private void close() {
 		try {
 			if (rs != null) {
 				rs.close();
