@@ -48,7 +48,7 @@ public class AuthorDao {
 	
 	
 	
-	public int authorDelete(int authorId) throws SQLException {
+	public int authorDelete(int authorId) {
 
 		int count = -1;
 		
@@ -77,7 +77,7 @@ public class AuthorDao {
 	
 	
 	
-	public int authorUpdate(AuthorVo authorVo) throws SQLException {
+	public int authorUpdate(AuthorVo authorVo) {
 
 		int count = -1;
 		
