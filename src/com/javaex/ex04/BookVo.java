@@ -1,25 +1,25 @@
 package com.javaex.ex04;
 
-public class BookVo extends AuthorVo {
+public class BookVo {
 	
 	private int bookId;
 	private String title;
 	private String pubs;
 	private String pubDate;
+	private int authorId;
 	
 	
 	public BookVo() {
-		super();
 	}
 	
-	public BookVo(int bookId, String title, String pubs, String pubDate, int authorId, String authorName, String authorDesc) {
-		super(authorId, authorName, authorDesc);
+	public BookVo(int bookId, String title, String pubs, String pubDate, int authorId) {
 		this.bookId = bookId;
 		this.title = title;
 		this.pubs = pubs;
 		this.pubDate = pubDate;
+		this.authorId = authorId;
 	}
-		
+	
 	public int getBookId() {
 		return bookId;
 	}
@@ -51,9 +51,17 @@ public class BookVo extends AuthorVo {
 	public void setPubDate(String pubDate) {
 		this.pubDate = pubDate;
 	}
+	
+	public int getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
+	}
 
 	public void print() {
-		System.out.println(bookId + ": " + title + ", " + pubs + ", " + pubDate + ", " + authorId + ", " + authorName + ", " + authorDesc);
+		System.out.println(bookId + ": " + title + ", " + pubs + ", " + pubDate + ", " + authorId);
 	}
 
 }

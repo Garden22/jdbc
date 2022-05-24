@@ -89,9 +89,9 @@ public class AuthorDao {
 			System.out.println(query);
 			
 			pstmt = conn.prepareStatement(query); 
-			pstmt.setString(1, authorVo.authorName);
-			pstmt.setString(2, authorVo.authorDesc);
-			pstmt.setInt(3, authorVo.authorId);
+			pstmt.setString(1, authorVo.getAuthorName());
+			pstmt.setString(2, authorVo.getAuthorDesc());
+			pstmt.setInt(3, authorVo.getAuthorId());
 			
 			count = pstmt.executeUpdate();
 			

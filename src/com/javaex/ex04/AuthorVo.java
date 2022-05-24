@@ -2,19 +2,22 @@ package com.javaex.ex04;
 
 public class AuthorVo {
 	
-	protected int authorId;
-	protected String authorName;
-	protected String authorDesc;
+	private int authorId;
+	private String authorName;
+	private String authorDesc;
 	
 	public AuthorVo() {
 		
 	}
-	
+		
 	public AuthorVo(String authorName, String authorDesc) {
 		this.authorName = authorName;
 		this.authorDesc = authorDesc;
 	}
 	
+	public AuthorVo(int authorId) {
+		this.authorId = authorId;
+	}
 	
 	public AuthorVo(int authorId, String authorName, String authorDesc) {
 		this.authorId = authorId;

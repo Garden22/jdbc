@@ -1,7 +1,5 @@
 package com.javaex.ex04;
 
-import java.util.*;
-
 public class AuthorApp {
 	
 	public static void main(String[] args) {
@@ -13,7 +11,7 @@ public class AuthorApp {
 		
 		//authorDao.authorDelete(9);
 			
-		List<AuthorVo> authorList = authorDao.authorSelect();
+		authorDao.authorSelect();
 	
 	}
 

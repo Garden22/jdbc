@@ -18,7 +18,7 @@ public class BookDao {
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 	
-	public void BookInsert(String title, String pubs, String pubDate, int authorId) {
+	public void BookInsert(BookVo bookVo) {
 		int count = -1;
 		getConnection();
 
@@ -27,10 +27,10 @@ public class BookDao {
 			query += "insert into book\nvalues(seq_book_id.nextval, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, title);
-			pstmt.setString(2, pubs);
-			pstmt.setString(3, pubDate);
-			pstmt.setInt(4, authorId);
+			pstmt.setString(1, bookVo.getTitle());
+			pstmt.setString(2, bookVo.getPubs());
+			pstmt.setString(3, bookVo.getPubDate());
+			pstmt.setInt(4, bookVo.getAuthorId());
 
 			count = pstmt.executeUpdate();		
 			
@@ -78,7 +78,7 @@ public class BookDao {
 	
 	
 	
-	public void BookUpdate(String title, String pubs, String pubDate, int authorId, int bookId) {
+	public void BookUpdate(BookVo bookVo) {
 		
 		getConnection();
 		int count = -1;
@@ -87,11 +87,11 @@ public class BookDao {
 			String query = "update book\nset title = ?, pubs = ?, pub_date = ?, author_id = ?\nwhere book_id = ? ";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, title);
-			pstmt.setString(2, pubs);
-			pstmt.setString(3, pubDate);
-			pstmt.setInt(4, authorId);
-			pstmt.setInt(5, bookId);
+			pstmt.setString(1, bookVo.getTitle());
+			pstmt.setString(2, bookVo.getPubs());
+			pstmt.setString(3, bookVo.getPubDate());
+			pstmt.setInt(4, bookVo.getAuthorId());
+			pstmt.setInt(5, bookVo.getBookId());
 
 			count = pstmt.executeUpdate();		
 			
@@ -127,7 +127,7 @@ public class BookDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
+				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5)));
 			}
 			
 		} catch (SQLException e) {
@@ -174,7 +174,7 @@ public class BookDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
+				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5)));
 			}
 			
 		} catch (SQLException e) {
