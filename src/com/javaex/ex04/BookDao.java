@@ -9,20 +9,20 @@ import java.util.*;
 
 public class BookDao {
 	
+	private Connection conn = null;
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	
+	private String id = "webdb";
+	private String pw = "webdb";
+	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
+
 	
 	public void BookInsert(String title, String pubs, String pubDate, int authorId) {
-		
 		int count = -1;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
+		getConnection();
 
+		try {
 			String query = "";
 			query += "insert into book\nvalues(seq_book_id.nextval, ?, ?, ?, ?)";
 			
@@ -34,22 +34,11 @@ public class BookDao {
 
 			count = pstmt.executeUpdate();		
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("errer: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
+		} 
+		
+		close();
 		
 		if (count > 0) {
 			System.out.println(count + "건 등록되었습니다.");
@@ -62,18 +51,10 @@ public class BookDao {
 	
 	
 	public void BookDelete(int bookId) {
-		
+		getConnection();
 		int count = -1;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
-
 			String query = "delete from book\nwhere book_id = ? ";
 			
 			pstmt = conn.prepareStatement(query);
@@ -81,22 +62,11 @@ public class BookDao {
 
 			count = pstmt.executeUpdate();		
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("errer: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
+		} 
+		
+		close();
 		
 		if (count > 0) {
 			System.out.println(count + "건 삭제되었습니다.");
@@ -110,19 +80,11 @@ public class BookDao {
 	
 	public void BookUpdate(String title, String pubs, String pubDate, int authorId, int bookId) {
 		
+		getConnection();
 		int count = -1;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
 
-			String query = "";
-			query += "update book\nset title = ?, pubs = ?, pub_date = ?, author_id = ?\nwhere book_id = ? ";
+		try {
+			String query = "update book\nset title = ?, pubs = ?, pub_date = ?, author_id = ?\nwhere book_id = ? ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, title);
@@ -133,22 +95,11 @@ public class BookDao {
 
 			count = pstmt.executeUpdate();		
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("errer: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
 		}
+		
+		close();
 		
 		if (count > 0) {
 			System.out.println(count + "건 업데이트되었습니다.");
@@ -163,16 +114,9 @@ public class BookDao {
 	public List<BookVo> BookSelect() {
 		
 		List<BookVo> bookList = new ArrayList<>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		getConnection();
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
 			String query = "";
 			query += "select b.book_id, b.title, b.pubs, to_char(b.pub_date, 'YYYY-MM-DD'), a.author_id, a.author_name, a.author_desc "; 
 			query += "from book b, author a ";
@@ -186,26 +130,12 @@ public class BookDao {
 				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("errer: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			// 5. 자원정리
-			try {
-				if (rs != null) {
-					rs.close();
-				} 
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
+		} 
+		
+		close();
+		
 		for (BookVo b: bookList) {
 			b.print();
 		}
@@ -220,21 +150,13 @@ public class BookDao {
 	public List<BookVo> BookSearch() {
 		Scanner sc = new Scanner(System.in);
 		
+		getConnection();
 		List<BookVo> bookList = new ArrayList<>();
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
+				
 		System.out.println("검색할 키워드를 입력하세요.");
 		String find = sc.next();
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-			
 			String query = "";
 			query += "select b.book_id, b.title, b.pubs, to_char(b.pub_date, 'YYYY-MM-DD'), a.author_id, a.author_name, a.author_desc "; 
 			query += "from book b, author a ";
@@ -255,25 +177,11 @@ public class BookDao {
 				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			System.out.println("errer: 드라이버 로딩 실패 - " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				} 
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (conn != null) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				System.out.println("error:" + e);
-			}
-		}
+		} 
+
+		close();
 		
 		for (BookVo b: bookList) {
 			b.print();
@@ -287,5 +195,36 @@ public class BookDao {
 		
 		sc.close();
 		return bookList;
+	}
+	
+	
+	
+	
+	private void getConnection() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(url, id, pw);
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("errer: 드라이버 로딩 실패 - " + e);
+			
+		} catch (SQLException e) {
+			System.out.println("error: " + e);
+		}
+	}
+	
+	
+	
+	private void close() {
+		try {
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
 	}
 }
