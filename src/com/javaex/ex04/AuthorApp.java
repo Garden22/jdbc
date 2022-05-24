@@ -14,10 +14,6 @@ public class AuthorApp {
 		//authorDao.authorDelete(9);
 			
 		List<AuthorVo> authorList = authorDao.authorSelect();
-
-		for (int i = 0; i < authorList.size(); i++) {
-			authorList.get(i).print();
-		}
 	
 	}
 

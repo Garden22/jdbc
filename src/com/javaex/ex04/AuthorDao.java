@@ -127,7 +127,10 @@ public class AuthorDao {
 				String authorName = rs.getString(2);
 				String authorDesc = rs.getString(3);
 				
-				authorList.add(new AuthorVo(authorID, authorName, authorDesc));
+				AuthorVo curr = new AuthorVo(authorID, authorName, authorDesc);
+				authorList.add(curr);
+				curr.print();
+				
 			}
 		
 		} catch (SQLException e) {
