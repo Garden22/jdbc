@@ -2,9 +2,9 @@ package com.javaex.ex02;
 
 public class AuthorVo {
 	
-	protected int authorId;
-	protected String authorName;
-	protected String authorDesc;
+	private int authorId;
+	private String authorName;
+	private String authorDesc;
 	
 	public AuthorVo() {
 		

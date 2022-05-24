@@ -183,7 +183,7 @@ public class BookDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
+				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5)));
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -252,7 +252,7 @@ public class BookDao {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6), rs.getString(7)));
+				bookList.add(new BookVo(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5)));
 			}
 			
 		} catch (ClassNotFoundException e) {
